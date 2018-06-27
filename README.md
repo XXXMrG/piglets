@@ -2,7 +2,6 @@
 A pig's restaurant system
 ## 目录结构
 ----
-==========================================================
 \根目录
 xxx.jsp                     jsp and JavaScript to control view
 
