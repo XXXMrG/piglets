@@ -1,2 +1,2 @@
 # piglets
-the repository of the pig's restaurant system
+A pig's restaurant system
