@@ -28,6 +28,15 @@
             <canvas id="demo-canvas"></canvas>
             <div class="logo_box">
                 <h3>欢迎你</h3>
+
+                <%
+                    if(session.getAttribute("message") != null){
+                        out.println("<center><p class='red'>");
+                        out.println(session.getAttribute("message"));
+                        out.println("</p></center>");
+                    }
+                %>
+
                 <form action="/LoginCheck" name="f" method="post" id = "loginCheck">
                     <div class="input_outer">
                         <span class="u_user"></span>
