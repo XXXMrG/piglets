@@ -6,7 +6,6 @@
 package Controller;
 
 import dao.DBconnect;
-import service.Register;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,8 +20,8 @@ import java.sql.SQLException;
 
 public class registerCheck extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();				//用于存储参数的session对象
-        int result = 0;
+        //HttpSession session = request.getSession();				//用于存储参数的session对象
+        //int result = 0;
         DBconnect dBconnect = new DBconnect();
 
         request.setCharacterEncoding("utf-8");
