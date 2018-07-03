@@ -32,6 +32,9 @@
 <body>
 <div class="page-container">
     <p class="f-20 text-success">欢迎使用佩奇餐饮管理系统 ！</p>
+    <%
+
+    %>
 
     <table class="table table-border table-bordered table-bg mt-20">
         <thead>
@@ -42,56 +45,56 @@
         <tbody>
         <tr>
             <th width="30%">客户姓名</th>
-            <td><span id="lbServerName">http://127.0.0.1/</span></td>
+            <td><span id="lbServerName"><%= session.getAttribute("R_name")%></span></td>
         </tr>
         <tr>
             <td>联系方式</td>
-            <td>192.168.1.1</td>
+            <td><%= session.getAttribute("R_tel")%></td>
         </tr>
         <tr>
             <td>预约编号</td>
-            <td>192.168.1.1</td>
+            <td><%= session.getAttribute("R_id")%></td>
         </tr>
         <tr>
             <td>预约日期</td>
-            <td>www.h-ui.net</td>
+            <td><%= session.getAttribute("R_date")%></td>
         </tr>
         <tr>
             <td>餐桌编号 </td>
-            <td>Microsoft Windows NT 5.2.3790 Service Pack 2</td>
+            <td><%= session.getAttribute("T_id")%></td>
         </tr>
         <tr>
             <td>用餐人数 </td>
-            <td>80</td>
+            <td><%= session.getAttribute("R_sum")%></td>
         </tr>
         <tr>
             <td>预约到店时间 </td>
-            <td>Microsoft-IIS/6.0</td>
+            <td><%= session.getAttribute("R_time_start")%></td>
         </tr>
         <tr>
             <td>预约离店时间 </td>
-            <td>D:\WebSite\HanXiPuTai.com\XinYiCMS.Web\</td>
+            <td><%= session.getAttribute("R_time_end")%></td>
         </tr>
         <tr>
             <td>实际到店时间 </td>
-            <td>Microsoft-IIS/6.0</td>
+            <td><%= session.getAttribute("E_time_start")%></td>
         </tr>
         <tr>
             <td>实际离店时间 </td>
-            <td>D:\WebSite\HanXiPuTai.com\XinYiCMS.Web\</td>
+            <td><%= session.getAttribute("E_time_end")%></td>
         </tr>
 
         <tr>
             <td>消费金额 </td>
-            <td>C:\WINDOWS\system32</td>
+            <td><%= session.getAttribute("R_pay")%></td>
         </tr>
         <tr>
             <td>是否为电话预约客户 </td>
-            <td>30000秒</td>
+            <td><%= session.getAttribute("R_isWalkin")%></td>
         </tr>
         <tr>
             <td>备注 </td>
-            <td>Chinese (People's Republic of China)</td>
+            <td><%= session.getAttribute("R_comment")%></td>
         </tr>
         </tbody>
     </table>

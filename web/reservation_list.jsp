@@ -1,7 +1,8 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Iterator" %>
 <%@ page import="service.user_list" %>
-<%@ page import="bean.users" %><%--
+<%@ page import="bean.users" %>
+<%@ page import="bean.Reservation" %><%--
   Created by IntelliJ IDEA.
   User: xxxmrg
   Date: 2018/6/30
@@ -66,27 +67,29 @@
             </tr>
             </thead>
             <tbody>
-            <jsp:useBean id="user" scope="request" class="service.user_list"></jsp:useBean>
+            <jsp:useBean id="reservation" scope="request" class="bean.ReservationList"></jsp:useBean>
 
             <%
-                user.setList();
-                ArrayList list = user.getList();
-                Iterator <users> it  = list.iterator();
+                reservation.setList();
+                ArrayList list = reservation.getList();
+                Iterator <Reservation> it  = list.iterator();
                 while(it.hasNext()){
-                    users use = it.next();
+                    Reservation res = it.next();
+                    String iswalkin = "预约客户";
+                    if (res.isR_isWalkin()){
+                        iswalkin = "零散客户";
+                    }
             %>
 
             <tr class="text-c">
                 <td><input type="checkbox" value="" name=""></td>
-                <td>10001</td>
-                <td class="text-l"><u style="cursor:pointer" class="text-primary" onClick="article_edit('查看','reservation_content.jsp','10001')" title="查看"><%= use.getUsername()%></u></td>
-                <td>行业动态</td>
-                <td>
-
-                </td>
-                <td>2014-6-11 11:11:42</td>
+                <td><%= res.getR_id() %></td>
+                <td class="text-l"><u style="cursor:pointer" class="text-primary" onClick="article_edit('查看','/ReservationController', <%= res.getR_id() %>)" title="查看"><%= res.getR_name()%></u></td>
+                <td><%= iswalkin %></td>
+                <td><%= res.getR_date() %></td>
+                <td><%=res.getT_id() %></td>
                 <td class="td-status"><span class="label label-success radius">已发布</span></td>
-                <td class="f-14 td-manage"><a style="text-decoration:none" onClick="article_stop(this,'10001')" href="javascript:;" title="下架"><i class="Hui-iconfont">&#xe6de;</i></a> <a style="text-decoration:none" class="ml-5" onClick="article_edit('资讯编辑','article-add.html','10001')" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a> <a style="text-decoration:none" class="ml-5" onClick="article_del(this,'10001')" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+                <td class="f-14 td-manage"><a style="text-decoration:none" onClick="article_stop(this,'10001', '完成预约', 'reservation_add.jsp', '', '510')" href="javascript:;" title="下架"><i class="Hui-iconfont">&#xe6de;</i></a> <a style="text-decoration:none" class="ml-5" onClick="article_edit('资讯编辑','article-add.html','10001')" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a> <a style="text-decoration:none" class="ml-5" onClick="article_del(this, <%= res.getR_id() %>)" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
             </tr>
             <%
                 }
@@ -99,7 +102,7 @@
                 <td>H-ui</td>
                 <td>2014-6-11 11:11:42</td>
                 <td class="td-status"><span class="label label-success radius">已发布</span></td>
-                <td class="f-14 td-manage"><a style="text-decoration:none" onClick="article_stop(this,'10001')" href="javascript:;" title="下架"><i class="Hui-iconfont">&#xe6de;</i></a> <a style="text-decoration:none" class="ml-5" onClick="article_edit('资讯编辑','article-add.html','10001')" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a> <a style="text-decoration:none" class="ml-5" onClick="article_del(this,'10001')" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+                <td class="f-14 td-manage"><a style="text-decoration:none" onClick="article_stop(this,'10001', '完成预约', 'reservation_add.jsp', '', '510')" href="javascript:;" title="下架"><i class="Hui-iconfont">&#xe6de;</i></a> <a style="text-decoration:none" class="ml-5" onClick="article_edit('资讯编辑','article-add.html','10001')" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a> <a style="text-decoration:none" class="ml-5" onClick="article_del(this,'10001')" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
             </tr>
             <tr class="text-c">
                 <td><input type="checkbox" value="" name=""></td>
@@ -146,24 +149,23 @@
         layer.full(index);
     }
     /*资讯-编辑*/
-    function article_edit(title,url,id,w,h){
+    function article_edit(title,url,id){
         var index = layer.open({
             type: 2,
             title: title,
-            content: url
+            content: url + "?id=" + id
         });
         layer.full(index);
     }
     /*资讯-删除*/
     function article_del(obj,id){
-        layer.confirm('确认要删除吗？',function(index){
+        layer.confirm('确认要删除预约吗？',function(index){
             $.ajax({
                 type: 'POST',
-                url: '',
-                dataType: 'json',
+                url: '/R_deleteController?id=' + id,
                 success: function(data){
                     $(obj).parents("tr").remove();
-                    layer.msg('已删除!',{icon:1,time:1000});
+                    layer.msg('已删除预约!',{icon:1,time:1000});
                 },
                 error:function(data) {
                     console.log(data.msg);
@@ -193,13 +195,16 @@
             });
     }
     /*资讯-下架*/
-    function article_stop(obj,id){
-        layer.confirm('确认要下架吗？',function(index){
-            $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="article_start(this,id)" href="javascript:;" title="发布"><i class="Hui-iconfont">&#xe603;</i></a>');
-            $(obj).parents("tr").find(".td-status").html('<span class="label label-defaunt radius">已下架</span>');
-            $(obj).remove();
-            layer.msg('已下架!',{icon: 5,time:1000});
-        });
+    function article_stop(obj,id,title, url, w, h){
+        layer_show(title, url, w, h);
+
+
+        // layer.confirm('确认要下架吗？',function(index){
+        //     $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="article_start(this,id)" href="javascript:;" title="发布"><i class="Hui-iconfont">&#xe603;</i></a>');
+        //     $(obj).parents("tr").find(".td-status").html('<span class="label label-defaunt radius">已下架</span>');
+        //     $(obj).remove();
+        //     layer.msg('已下架!',{icon: 5,time:1000});
+        // });
     }
 
     /*资讯-发布*/

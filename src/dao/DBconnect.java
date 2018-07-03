@@ -3,7 +3,7 @@ import java.sql.*;
 
 public class DBconnect {
     String drivername  = "com.mysql.cj.jdbc.Driver";
-    private String url = "jdbc:mysql://localhost/restaurantsystem";
+    private String url = "jdbc:mysql://localhost/restaurantsystem?useSSL=false";
     Connection connect = null;
     ResultSet rs = null;
     Statement stmt = null;
