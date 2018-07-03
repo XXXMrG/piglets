@@ -2,7 +2,6 @@ package Controller;
 
 import bean.Reservation;
 import bean.ReservationList;
-import com.mysql.cj.Session;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,6 +17,7 @@ import java.util.Iterator;
 public class ReservationController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
+        int flag = Integer.parseInt(request.getParameter("flag"));
         ReservationList res = new ReservationList();
         res.setList();
         ArrayList list = res.getList();
@@ -26,12 +26,10 @@ public class ReservationController extends HttpServlet {
         while (it.hasNext()){
             Reservation reservation = it.next();
             String iswalkin = "预约客户";
-            System.out.println(reservation.getR_id());
             if (reservation.getR_id() == id){
                 if (reservation.isR_isWalkin()){
                     iswalkin = "零散客户";
                 }
-
                 session.setAttribute("R_id", id);
                 session.setAttribute("R_name", reservation.getR_name());
                 session.setAttribute("R_tel", reservation.getR_tel());
@@ -46,15 +44,18 @@ public class ReservationController extends HttpServlet {
                 session.setAttribute("R_isWalkin", iswalkin);
                 session.setAttribute("R_comment", reservation.getR_comment());
 
-
                 break;
             }
-
-
-
-
         }
-        response.sendRedirect("reservation_content.jsp");
+
+        if (flag == 1)
+            response.sendRedirect("reservation_content.jsp");
+        if (flag == 2)
+            response.sendRedirect("reservation_edit.jsp");
+        if (flag == 3)
+            response.sendRedirect("reservation_over.jsp");
+        if (flag == 4)
+            response.sendRedirect("reservation_end.jsp");
 
 
     }

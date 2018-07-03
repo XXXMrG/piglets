@@ -26,4 +26,62 @@
         <url-pattern>/register</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>ReservationController</servlet-name>
+        <servlet-class>Controller.ReservationController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ReservationController</servlet-name>
+        <url-pattern>/ReservationController</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>R_deleteController</servlet-name>
+        <servlet-class>Controller.R_deleteController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>R_deleteController</servlet-name>
+        <url-pattern>/R_deleteController</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Reservation_over</servlet-name>
+        <servlet-class>Controller.Reservation_over</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Reservation_over</servlet-name>
+        <url-pattern>/Reservation_over</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Reservation_end</servlet-name>
+        <servlet-class>Controller.Reservation_end</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Reservation_end</servlet-name>
+        <url-pattern>/Reservation_end</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Reservation_edit</servlet-name>
+        <servlet-class>Controller.Reservation_edit</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Reservation_edit</servlet-name>
+        <url-pattern>/Reservation_edit</url-pattern>
+    </servlet-mapping>
+
+
+
+    <servlet>
+        <servlet-name>NewReservation</servlet-name>
+        <servlet-class>Controller.NewReservation</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>NewReservation</servlet-name>
+        <url-pattern>/NewReservation</url-pattern>
+    </servlet-mapping>
+
+
+
 </web-app>

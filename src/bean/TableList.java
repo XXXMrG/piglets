@@ -13,8 +13,7 @@ public class TableList {
         return list;
     }
 
-    public void setList() {
-        String sql = "SELECT * FROM `Tables`";
+    public void setList(String sql) {
         ResultSet rs = null;
         DBconnect con = new DBconnect();
         con.conn(); //连接数据库

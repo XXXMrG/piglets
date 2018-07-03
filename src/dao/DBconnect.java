@@ -45,6 +45,66 @@ public class DBconnect {
         return result;
     }
 
+    // 预约到达
+    public int UpdateRes(String time, int id, int isover){
+        int result = 0;
+        String sql = "UPDATE Reservation SET E_time_start = ?, R_isOver = ?  WHERE R_id = ?";
+        PreparedStatement pstmt;
+        try{
+            connect = DriverManager.getConnection(url, "root", "Ln/y&aF37vBnmdt4");
+            pstmt = connect.prepareStatement(sql);
+            pstmt.setString(1, time);
+            pstmt.setInt(2, isover);
+            pstmt.setInt(3, id);
+            result = pstmt.executeUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+
+    // 订单完成
+    public int EndRes(String time, int id, int isover, int pay){
+        int result = 0;
+        String sql = "UPDATE Reservation SET E_time_end = ?, R_isOver = ? , R_pay = ? WHERE R_id = ?";
+        PreparedStatement pstmt;
+        try{
+            connect = DriverManager.getConnection(url, "root", "Ln/y&aF37vBnmdt4");
+            pstmt = connect.prepareStatement(sql);
+            pstmt.setString(1, time);
+            pstmt.setInt(2, isover);
+            pstmt.setInt(3, pay);
+            pstmt.setInt(4, id);
+            result = pstmt.executeUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return result;
+    }
+    // 修改预约
+    public int editRes(String tel, int sum, String tid, String RTS, String RTE, String RC, int rid){
+        int result = 0;
+        String sql = "UPDATE Reservation SET R_tel = ?, R_sum = ?, T_id = ?, R_time_start = ? , R_time_end = ?, R_comment = ? WHERE R_id = ?";
+        PreparedStatement pstmt;
+        try{
+            connect = DriverManager.getConnection(url, "root", "Ln/y&aF37vBnmdt4");
+            pstmt = connect.prepareStatement(sql);
+
+            pstmt.setString(1, tel);
+            pstmt.setInt(2, sum);
+            pstmt.setString(3,tid);
+            pstmt.setString(4,RTS);
+            pstmt.setString(5,RTE);
+            pstmt.setString(6,RC);
+            pstmt.setInt(7, rid);
+            result = pstmt.executeUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     //
     public int executeInsert(String username, String password, int asu_id, int priv){
         int result = 0;

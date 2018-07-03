@@ -1,12 +1,11 @@
 <%--
   Created by IntelliJ IDEA.
-  User: xxxmrg
-  Date: 2018/7/2
-  Time: 下午9:40
+  User: asus
+  Date: 2018/7/4
+  Time: 0:12
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<!--_meta 作为公共模版分离出去-->
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -32,7 +31,7 @@
     <![endif]-->
     <!--/meta 作为公共模版分离出去-->
 
-    <title>新增文章 - 资讯管理 - H-ui.admin v3.1</title>
+    <title>添加wall_in</title>
     <meta name="keywords" content="H-ui.admin v3.1,H-ui网站后台模版,后台模版下载,后台管理系统模版,HTML后台模版下载">
     <meta name="description" content="H-ui.admin v3.1，是一款由国人开发的轻量级扁平化网站后台模板，完全免费开源的网站后台管理系统模版，适合中小型CMS后台系统。">
 </head>
@@ -45,32 +44,28 @@
                 <input type="text" class="input-text" value="" placeholder="" id="c_name" name="c_name">
             </div>
         </div>
+
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>联系方式：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="c_tel" name="c_tel">
-            </div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>用餐人数：</label>
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>用餐人数：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="text" class="input-text" value="" placeholder="" id="c_sum" name="c_sum">
             </div>
         </div>
 
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>预约日期：</label>
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>到达日期：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="text" onfocus="WdatePicker({})" id="R_date" name="R_date" class="input-text Wdate" style="width:120px;">
             </div>
         </div>
 
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>预计到达时间：</label>
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>到达时间：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="text" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss'})" id="commentdatemin" name="r_start_time" class="input-text Wdate">
             </div>
         </div>
+
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>预计结束时间：</label>
             <div class="formControls col-xs-8 col-sm-9">
@@ -155,13 +150,7 @@
 
     });
 
-    //新建预约
-    function article_save_submit(title,url) {
-        layer_show(title, url);
-    }
-
 </script>
 <!--/请在上方写此页面业务相关的脚本-->
 </body>
 </html>
-

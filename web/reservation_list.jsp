@@ -1,6 +1,6 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Iterator" %>
-<%@ page import="service.user_list" %>
+<%@ page import="bean.users.user_list" %>
 <%@ page import="bean.users" %>
 <%@ page import="bean.Reservation" %><%--
   Created by IntelliJ IDEA.
@@ -36,22 +36,8 @@
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 资讯管理 <span class="c-gray en">&gt;</span> 资讯列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
-    <div class="text-c">
-        <button onclick="removeIframe()" class="btn btn-primary radius">关闭选项卡</button>
-        <span class="select-box inline">
-		<select name="" class="select">
-			<option value="0">全部分类</option>
-			<option value="1">分类一</option>
-			<option value="2">分类二</option>
-		</select>
-		</span> 日期范围：
-        <input type="text" onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'logmax\')||\'%y-%M-%d\'}' })" id="logmin" class="input-text Wdate" style="width:120px;">
-        -
-        <input type="text" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'logmin\')}',maxDate:'%y-%M-%d' })" id="logmax" class="input-text Wdate" style="width:120px;">
-        <input type="text" name="" id="" placeholder=" 资讯名称" style="width:250px" class="input-text">
-        <button name="" id="" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i> 搜资讯</button>
-    </div>
-    <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a class="btn btn-primary radius" data-title="添加资讯" data-href="article-add.html" onclick="Hui_admin_tab(this)" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加资讯</a></span> <span class="r">共有数据：<strong>54</strong> 条</span> </div>
+
+    <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"> <a class="btn btn-primary radius" data-title="添加预约" data-href="reservation_add.jsp" onclick="Hui_admin_tab(this)" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加预约</a></span> </div>
     <div class="mt-20">
         <table class="table table-border table-bordered table-bg table-hover table-sort table-responsive">
             <thead>
@@ -80,40 +66,38 @@
                         iswalkin = "零散客户";
                     }
             %>
-
             <tr class="text-c">
                 <td><input type="checkbox" value="" name=""></td>
                 <td><%= res.getR_id() %></td>
-                <td class="text-l"><u style="cursor:pointer" class="text-primary" onClick="article_edit('查看','/ReservationController', <%= res.getR_id() %>)" title="查看"><%= res.getR_name()%></u></td>
+                <td class="text-l"><u style="cursor:pointer" class="text-primary" onClick="article_show('查看','/ReservationController', <%= res.getR_id() %>)" title="查看"><%= res.getR_name()%></u></td>
                 <td><%= iswalkin %></td>
                 <td><%= res.getR_date() %></td>
                 <td><%=res.getT_id() %></td>
-                <td class="td-status"><span class="label label-success radius">已发布</span></td>
-                <td class="f-14 td-manage"><a style="text-decoration:none" onClick="article_stop(this,'10001', '完成预约', 'reservation_add.jsp', '', '510')" href="javascript:;" title="下架"><i class="Hui-iconfont">&#xe6de;</i></a> <a style="text-decoration:none" class="ml-5" onClick="article_edit('资讯编辑','article-add.html','10001')" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a> <a style="text-decoration:none" class="ml-5" onClick="article_del(this, <%= res.getR_id() %>)" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+                <% if (res.isR_isOver() == 0) { %>
+                    <td class="td-status"><span class="label label-danger radius">未到达</span></td>
+                    <td class="f-14 td-manage">
+                        <a style="text-decoration:none" onClick="article_over(this, <%= res.getR_id() %>, '确认', '/ReservationController' , '400', '610')" href="javascript:;" title="到达">到达</a>
+                        <a style="text-decoration:none" class="ml-5" onClick="article_edit('修改预约','/ReservationController',<%= res.getR_id()%>, '450', '610')" href="javascript:;" title="修改"><i class="Hui-iconfont">&#xe6df;</i></a>
+                        <a style="text-decoration:none" class="ml-5" onClick="article_del(this, <%= res.getR_id() %>)" href="javascript:;" title="删除预约"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+                <% } %>
+                <% if (res.isR_isOver() == 1) { %>
+                    <td class="td-status"><span class="label label-success radius">进行中</span></td>
+                <td class="f-14 td-manage">
+                    <a style="text-decoration:none" onClick="article_end(this, <%= res.getR_id() %>, '确认', '/ReservationController', '400', '610')" href="javascript:;" title="到达">完成</a>
+                    <a style="text-decoration:none" class="ml-5" onClick="article_edit('修改预约','/ReservationController',<%= res.getR_id()%>, '450', '610')" href="javascript:;" title="修改"><i class="Hui-iconfont">&#xe6df;</i></a>
+                    <a style="text-decoration:none" class="ml-5" onClick="article_del(this, <%= res.getR_id() %>)" href="javascript:;" title="删除预约"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+                <% } %>
+                <% if (res.isR_isOver() == 2) { %>
+                    <td class="td-status"><span class="label label-defaunt radius">已完成</span></td>
+                <td class="f-14 td-manage">
+                    <a style="text-decoration:none" class="ml-5" onClick="article_edit('修改预约','/ReservationController',<%= res.getR_id()%>, '450', '610')" href="javascript:;" title="修改"><i class="Hui-iconfont">&#xe6df;</i></a>
+                    <a style="text-decoration:none" class="ml-5" onClick="article_del(this, <%= res.getR_id() %>)" href="javascript:;" title="删除预约"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+                <% } %>
+
             </tr>
             <%
                 }
             %>
-            <tr class="text-c">
-                <td><input type="checkbox" value="" name=""></td>
-                <td>10001</td>
-                <td class="text-l"><u style="cursor:pointer" class="text-primary" onClick="article_edit('查看','reservation_content.jsp','10001')" title="查看">资讯标题</u></td>
-                <td>行业动态</td>
-                <td>H-ui</td>
-                <td>2014-6-11 11:11:42</td>
-                <td class="td-status"><span class="label label-success radius">已发布</span></td>
-                <td class="f-14 td-manage"><a style="text-decoration:none" onClick="article_stop(this,'10001', '完成预约', 'reservation_add.jsp', '', '510')" href="javascript:;" title="下架"><i class="Hui-iconfont">&#xe6de;</i></a> <a style="text-decoration:none" class="ml-5" onClick="article_edit('资讯编辑','article-add.html','10001')" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a> <a style="text-decoration:none" class="ml-5" onClick="article_del(this,'10001')" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
-            </tr>
-            <tr class="text-c">
-                <td><input type="checkbox" value="" name=""></td>
-                <td>10002</td>
-                <td class="text-l"><u style="cursor:pointer" class="text-primary" onClick="article_edit('查看','reservation_content.jsp','10002')" title="查看">资讯标题</u></td>
-                <td>行业动态</td>
-                <td>H-ui</td>
-                <td>2014-6-11 11:11:42</td>
-                <td class="td-status"><span class="label label-success radius">草稿</span></td>
-                <td class="f-14 td-manage"><a style="text-decoration:none" onClick="article_shenhe(this,'10001')" href="javascript:;" title="审核">审核</a> <a style="text-decoration:none" class="ml-5" onClick="article_edit('资讯编辑','article-add.html','10001')" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a> <a style="text-decoration:none" class="ml-5" onClick="article_del(this,'10001')" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
-            </tr>
             </tbody>
         </table>
     </div>
@@ -130,16 +114,12 @@
 <script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
     $('.table-sort').dataTable({
-        "aaSorting": [[ 1, "desc" ]],//默认第几个排序
-        "bStateSave": true,//状态保存
-        "pading":false,
-        "aoColumnDefs": [
-            //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
-            //{"orderable":false,"aTargets":[0,8]}// 不参与排序的列
-        ]
+        "aaSorting": [[ 4, "desc" ]],//默认第几个排序
+        //"bStateSave": true,//状态保存
+        //"pading":false,
     });
 
-    /*资讯-添加*/
+    /*预约-添加*/
     function article_add(title,url,w,h){
         var index = layer.open({
             type: 2,
@@ -148,16 +128,23 @@
         });
         layer.full(index);
     }
-    /*资讯-编辑*/
-    function article_edit(title,url,id){
+    /*预约-查看*/
+    function article_show(title,url,id, w, h){
         var index = layer.open({
             type: 2,
             title: title,
-            content: url + "?id=" + id
+            content: url + "?id=" + id + "&flag=" + 1,
         });
         layer.full(index);
     }
-    /*资讯-删除*/
+
+    /*资讯-修改*/
+    function article_edit(title, url,id, w, h){
+        url = url + '?id=' + id + '&flag=' + 2,
+        layer_show(title, url, w, h);
+    }
+
+    /*预约-删除*/
     function article_del(obj,id){
         layer.confirm('确认要删除预约吗？',function(index){
             $.ajax({
@@ -174,28 +161,15 @@
         });
     }
 
-    /*资讯-审核*/
-    function article_shenhe(obj,id){
-        layer.confirm('审核文章？', {
-                btn: ['通过','不通过','取消'],
-                shade: false,
-                closeBtn: 0
-            },
-            function(){
-                $(obj).parents("tr").find(".td-manage").prepend('<a class="c-primary" onClick="article_start(this,id)" href="javascript:;" title="申请上线">申请上线</a>');
-                $(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已发布</span>');
-                $(obj).remove();
-                layer.msg('已发布', {icon:6,time:1000});
-            },
-            function(){
-                $(obj).parents("tr").find(".td-manage").prepend('<a class="c-primary" onClick="article_shenqing(this,id)" href="javascript:;" title="申请上线">申请上线</a>');
-                $(obj).parents("tr").find(".td-status").html('<span class="label label-danger radius">未通过</span>');
-                $(obj).remove();
-                layer.msg('未通过', {icon:5,time:1000});
-            });
+    function article_end(obj,id,title, url, w, h) {
+        url = url + '?id=' + id + '&flag=' + 4;
+        layer_show(title, url, w, h);
     }
-    /*资讯-下架*/
-    function article_stop(obj,id,title, url, w, h){
+
+    /*记录到达*/
+    function article_over(obj,id,title, url, w, h){
+
+        url = url + '?id=' + id + '&flag=' + 3;
         layer_show(title, url, w, h);
 
 

@@ -67,6 +67,7 @@ public class ReservationList {
             reservation.setR_pay(resultSet.getInt("R_pay"));
             reservation.setR_isWalkin(resultSet.getBoolean("R_isWalkin"));
             reservation.setR_comment(resultSet.getString("R_comment"));
+            reservation.setR_isOver(resultSet.getInt("R_isOver"));
             list.add(reservation);
         }catch (SQLException e){
             e.printStackTrace();

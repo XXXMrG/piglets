@@ -1,9 +1,11 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Iterator" %>
-<%@ page import="service.user_list" %>
+<%@ page import="bean.users.user_list" %>
 <%@ page import="bean.users" %>
 <%@ page import="bean.Reservation" %>
-<%@ page import="bean.Table" %><%--
+<%@ page import="bean.Table" %>
+<%@ page import="java.lang.ref.SoftReference" %>
+<%--
   Created by IntelliJ IDEA.
   User: xxxmrg
   Date: 2018/6/30
@@ -32,7 +34,7 @@
     <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
     <script>DD_belatedPNG.fix('*');</script>
     <![endif]-->
-    <title>资讯列表</title>
+    <title>餐桌列表</title>
 </head>
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 资讯管理 <span class="c-gray en">&gt;</span> 资讯列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
@@ -52,7 +54,7 @@
         <input type="text" name="" id="" placeholder=" 资讯名称" style="width:250px" class="input-text">
         <button name="" id="" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i> 搜资讯</button>
     </div>
-    <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a class="btn btn-primary radius" data-title="添加资讯" data-href="article-add.html" onclick="Hui_admin_tab(this)" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加资讯</a></span> <span class="r">共有数据：<strong>54</strong> 条</span> </div>
+    <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"> <a class="btn btn-primary radius" data-title="添加资讯" data-href="walkin_add.jsp" onclick="Hui_admin_tab(this)" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加Walkin</a></span> </div>
     <div class="mt-20">
         <table class="table table-border table-bordered table-bg table-hover table-sort table-responsive">
             <thead>
@@ -67,8 +69,44 @@
             </thead>
             <tbody>
             <jsp:useBean id="tables" class="bean.TableList" scope="request"/>
+
             <%
-                tables.setList();
+                request.setCharacterEncoding("utf-8");
+                String sql = null;
+                String date = request.getParameter("R_date");
+                String R_name = request.getParameter("c_name");
+                String R_tel = request.getParameter("c_tel");
+                String R_sum = request.getParameter("c_sum");
+                String R_time_start = request.getParameter("r_start_time");
+                String R_time_end = request.getParameter("r_end_time");
+
+                //保存数据到session
+
+                session.setAttribute("date", date);
+                session.setAttribute("R_name", R_name);
+                session.setAttribute("R_tel", R_tel);
+                session.setAttribute("R_sum", R_sum);
+                session.setAttribute("R_time_start", R_time_start);
+                session.setAttribute("R_time_end", R_time_end);
+                //上面的参数作为新建预约传进来的参数
+                /**
+                 *  String date = "2018-07-04";
+                 *  String date_start = "2018-07-04 18:00:00";
+                 *  String date_end = "2018-07-04 19:00:00";
+                 *  String number = "8";
+                 */
+
+                if (date == null || R_time_start == null || R_time_end == null || R_sum == null)
+                    sql = "select * from `tables`";
+                else {
+                    String sql1 = "SELECT T_id FROM reservation WHERE reservation.R_date = '" + date + "' and ";
+                    String sql2 = "reservation.R_time_start > '" + R_time_start + "'OR reservation.R_time_end < '"
+                    + R_time_end + "')";
+                    sql = "SELECT distinct * FROM `tables`T WHERE T.places >= " + R_sum + " and T.table_id not IN ("
+                            +sql1 + sql2 ;
+                    System.out.println(sql);
+                }
+                tables.setList(sql);
                 ArrayList tablelist = tables.getList();
                 java.util.Iterator iter = tablelist.iterator();
                 while (iter.hasNext()) {
@@ -82,8 +120,17 @@
                 </td>
                 <td><%= table.getPlaces()%></td>
                 <td><%= table.getNumber()%></td>
-                <td class="td-status"><span class="label label-success radius">未启用</span></td>
-                <td class="f-14 td-manage"><a style="text-decoration:none" onClick="article_shenhe(this,'10001')" href="javascript:;" title="审核">审核</a> <a style="text-decoration:none" class="ml-5" onClick="article_edit('资讯编辑','article-add.html','10001')" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a> <a style="text-decoration:none" class="ml-5" onClick="article_del(this,'10001')" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+
+                <% if (table.getRun() == 0) { %>
+                <td class="td-status"><span class="label label-success radius">未占用</span></td>
+                <% } %>
+                <% if (table.getRun() == 1){%>
+                <td class="td-status"><span class="label label-danger radius">已占用</span></td>
+                <% } %>
+
+                <td class="f-14 td-manage">
+                    <button onClick="article_select(this, '/NewReservation?table_id=<%= table.getTable_id()%>')" class="btn btn-default radius" type="button">&nbsp;&nbsp;选择预约&nbsp;&nbsp;</button>
+                </td>
             </tr>
 
             <%
@@ -136,20 +183,37 @@
     }
 
     /*资讯-修改*/
-    function article_edit(title, url,id, w, h){
+    function article_select(obj, URL){
         //url: url + '?id=' + id,
-        layer_show(title, url, w, h);
+        layer.confirm('确认要选择该餐桌吗？',function(index){
+            $.ajax({
+                type: 'POST',
+                url: URL,
+                success: function(data){
+                    layer.msg('新建预约完成!',{icon:1,time:1000});
+                    window.setTimeout("window.location='OkReservation.jsp'",2000);
+                },
+                error:function(data) {
+                    console.log(data.msg);
+                },
+            });
+        });
+    }
+
+    /*查看*/
+    function article_edit(title, url, obj, id){
+        layer_show(title, url);
     }
 
     /*预约-删除*/
     function article_del(obj,id){
-        layer.confirm('确认要删除预约吗？',function(index){
+        layer.confirm('确认要删除该餐桌吗？',function(index){
             $.ajax({
                 type: 'POST',
                 url: '/R_deleteController?id=' + id,
                 success: function(data){
                     $(obj).parents("tr").remove();
-                    layer.msg('已删除预约!',{icon:1,time:1000});
+                    layer.msg('已删除该餐桌!',{icon:1,time:1000});
                 },
                 error:function(data) {
                     console.log(data.msg);

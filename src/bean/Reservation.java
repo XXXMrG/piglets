@@ -19,7 +19,7 @@ public class Reservation {
     private int R_pay;
     private boolean R_isWalkin;
     private String R_comment;
-    private boolean R_isOver;
+    private int R_isOver;
 
     public void setE_time_end(String e_time_end) {
         E_time_end = e_time_end;
@@ -125,11 +125,11 @@ public class Reservation {
         return R_isWalkin;
     }
 
-    public void setR_isOver(boolean r_isOver) {
+    public void setR_isOver(int r_isOver) {
         R_isOver = r_isOver;
     }
 
-    public boolean isR_isOver() {
+    public int isR_isOver() {
         return R_isOver;
     }
 }
