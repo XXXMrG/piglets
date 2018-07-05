@@ -1,5 +1,5 @@
 # 佩奇餐饮管理系统
-#Macbook/oop
+
 [![forthebadge](https://forthebadge.com/images/badges/made-with-java.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/made-with-javascript.svg)](https://forthebadge.com)
 - - - -
@@ -143,8 +143,8 @@
 
 # License
 - - - -
-[![forthebadge](https://forthebadge.com/images/badges/designed-in-H-ui.svg)](https://github.com/jackying/h-ui)
-*contributor*
+https://github.com/jackying/h-ui
+# contributor
 https://github.com/Lcanboom
 
 
