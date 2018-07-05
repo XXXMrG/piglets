@@ -143,8 +143,8 @@
 
 # License
 - - - -
-[![forthebadge](https://forthebadge.com/images/badges/designed-in-H-ui.svg)](https://forthebadge.com)
-*contributor*
+https://github.com/jackying/h-ui
+# contributor
 https://github.com/Lcanboom
 
 
