@@ -86,30 +86,32 @@
 ![P158u6.png](https://s1.ax1x.com/2018/07/19/P158u6.png)
 
 注册界面：
-
+![P15kj0.png](https://s1.ax1x.com/2018/07/19/P15kj0.png)
 
 主界面：
-
+![P15EuV.png](https://s1.ax1x.com/2018/07/19/P15EuV.png)
 餐桌管理：
-
+![P15mEF.png](https://s1.ax1x.com/2018/07/19/P15mEF.png)
 预约详情：
-
+![P15i3n.png](https://s1.ax1x.com/2018/07/19/P15i3n.png)
 确认到达：
-
+![P15Fcq.png](https://s1.ax1x.com/2018/07/19/P15Fcq.png)
 预约列表：
-
+![P15VBT.png](https://s1.ax1x.com/2018/07/19/P15VBT.png)
 修改预约：
-
+![P15u4J.png](https://s1.ax1x.com/2018/07/19/P15u4J.png)
 删除预约：
+![P15ZHU.png](https://s1.ax1x.com/2018/07/19/P15ZHU.png)
 
 新建预约：
+![P15nN4.png](https://s1.ax1x.com/2018/07/19/P15nN4.png)
 
 筛选餐桌：
-
+![P15MC9.png](https://s1.ax1x.com/2018/07/19/P15MC9.png)
 预约完成：
-
-
-
+![P151jx.png](https://s1.ax1x.com/2018/07/19/P151jx.png)
+![P15Q3R.png](https://s1.ax1x.com/2018/07/19/P15Q3R.png)
+![P15lg1.png](https://s1.ax1x.com/2018/07/19/P15lg1.png)
 
 # License
 - - - -
